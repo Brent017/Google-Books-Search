@@ -6,14 +6,13 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState({ items: [] });
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const onInputChange = e => {
-    setSearchTerm(e.target.value);
-  };
-
-  let API_URL = "https://www,googleapis.com/books/v1/volumes";
+  let API_URL = `https://www.googleapis.com/books/v1/volumes`;
 
   const fetchBooks = async () => {
+    // set loading before api operation starts
+    setLoading(true);
     setError(false);
     try {
       // Ajax call to api using Axios
@@ -23,6 +22,12 @@ const App = () => {
     } catch (err) {
       setError(true);
     }
+    // after api operation ends
+    setLoading(false);
+  };
+
+  const onInputChange = e => {
+    setSearchTerm(e.target.value);
   };
 
   // Submit handler
@@ -34,6 +39,7 @@ const App = () => {
   };
 
   const bookAuthors = authors => {
+    if (!authors) return "";
     if (authors.length <= 2) {
       authors = authors.join(" and ");
     } else if (authors.length > 2) {
@@ -55,6 +61,7 @@ const App = () => {
             placeholder="search book"
             value={searchTerm}
             onChange={onInputChange}
+            required
           />
           <button type="submit">Search</button>
         </label>
@@ -64,6 +71,11 @@ const App = () => {
           </div>
         )}
       </form>
+      {loading && (
+        <div style={{ color: "green" }}>
+          fetching books for "<strong>{searchTerm}</strong>"
+        </div>
+      )}
       <ul>
         {books.items.map((book, index) => {
           return (
@@ -71,7 +83,7 @@ const App = () => {
               <div>
                 <img
                   alt={`${book.volumeInfo.title} book`}
-                  src={`http://books.google.com/books.content?id=${book.id}&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
+                  src={`http://books.google.com/books/content?id=${book.id}&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
                 />
                 <div>
                   <h3>{book.volumeInfo.title}</h3>
