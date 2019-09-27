@@ -5,6 +5,7 @@ import "./App.css";
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState({ items: [] });
+  const [error, setError] = useState(false);
 
   const onInputChange = e => {
     setSearchTerm(e.target.value);
@@ -13,10 +14,15 @@ const App = () => {
   let API_URL = "https://www,googleapis.com/books/v1/volumes";
 
   const fetchBooks = async () => {
-    // Ajax call to api using Axios
-    const result = await axios.get(`${API_URL}?q=${searchTerm}`);
-    // Books result
-    setBooks(result.data);
+    setError(false);
+    try {
+      // Ajax call to api using Axios
+      const result = await axios.get(`${API_URL}?q=${searchTerm}`);
+      // Books result
+      setBooks(result.data);
+    } catch (err) {
+      setError(true);
+    }
   };
 
   // Submit handler
@@ -52,6 +58,11 @@ const App = () => {
           />
           <button type="submit">Search</button>
         </label>
+        {error && (
+          <div style={{ color: "red" }}>
+            some error occurred while fetching api
+          </div>
+        )}
       </form>
       <ul>
         {books.items.map((book, index) => {
