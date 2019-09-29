@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import BookSearchForm from "./components/booksSearchForm";
 import Loader from "./components/loader";
+import BooksList from "./components/booksList";
 import "./App.css";
 
 const App = () => {
@@ -40,19 +41,6 @@ const App = () => {
     fetchBooks();
   };
 
-  const bookAuthors = authors => {
-    if (!authors) return "";
-    if (authors.length <= 2) {
-      authors = authors.join(" and ");
-    } else if (authors.length > 2) {
-      let lastAuthor = " and " + authors.slice(-1);
-      authors.pop();
-      authors = authors.join(", ");
-      authors += lastAuthor;
-    }
-    return authors;
-  };
-
   return (
     <section>
       <BookSearchForm
@@ -62,26 +50,7 @@ const App = () => {
         error={error}
       />
       <Loader />
-      <ul>
-        {books.items.map((book, index) => {
-          return (
-            <li key={index}>
-              <div>
-                <img
-                  alt={`${book.volumeInfo.title} book`}
-                  src={`http://books.google.com/books/content?id=${book.id}&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
-                />
-                <div>
-                  <h3>{book.volumeInfo.title}</h3>
-                  <p>{bookAuthors(book.volumeInfo.authors)}</p>
-                  <p>{book.volumeInfo.publishedDate}</p>
-                </div>
-              </div>
-              <hr />
-            </li>
-          );
-        })}
-      </ul>
+      <BooksList books={books} />
     </section>
   );
 };
