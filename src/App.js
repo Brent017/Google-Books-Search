@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import BookSearchForm from "./components/booksSearchForm";
 import "./App.css";
 
 const App = () => {
@@ -53,24 +54,12 @@ const App = () => {
 
   return (
     <section>
-      <form onSubmit={onSubmitHandler}>
-        <label>
-          <span>Search for books</span>
-          <input
-            type="search"
-            placeholder="search book"
-            value={searchTerm}
-            onChange={onInputChange}
-            required
-          />
-          <button type="submit">Search</button>
-        </label>
-        {error && (
-          <div style={{ color: "red" }}>
-            some error occurred while fetching api
-          </div>
-        )}
-      </form>
+      <BookSearchForm
+        onSubmitHandler={onSubmitHandler}
+        onInputChange={onInputChange}
+        searchTerm={searchTerm}
+        error={error}
+      />
       {loading && (
         <div style={{ color: "green" }}>
           fetching books for "<strong>{searchTerm}</strong>"
