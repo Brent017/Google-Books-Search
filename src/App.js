@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import BookSearchForm from "./components/booksSearchForm";
+import Loader from "./components/loader";
 import "./App.css";
 
 const App = () => {
@@ -60,11 +61,7 @@ const App = () => {
         searchTerm={searchTerm}
         error={error}
       />
-      {loading && (
-        <div style={{ color: "green" }}>
-          fetching books for "<strong>{searchTerm}</strong>"
-        </div>
-      )}
+      <Loader />
       <ul>
         {books.items.map((book, index) => {
           return (
