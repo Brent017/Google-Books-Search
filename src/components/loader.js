@@ -1,11 +1,18 @@
+import { css, jsx } from "@emotion/core";
 import React from "react";
 
-const Loader = ({ loading, searchTerm }) => {
+const Loader: React.FunctionComponent<{}> = ({ loading, children }) => {
   return (
     <>
       {loading && (
-        <div style={{ color: "green" }}>
-          Searching for books with reference "<strong>{searchTerm}</strong>"
+        <div
+          css={css`
+            color: green;
+            text-align: center;
+            padding: 20px 0;
+          `}
+        >
+          {children}
         </div>
       )}
     </>

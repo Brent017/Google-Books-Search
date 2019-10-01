@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import BookDetail from "../components/bookDetail";
+import Loader from "../components/loader";
+import ErrorText from "../components/errorText";
 
 const BookDetailPage = ({ match }) => {
   const {
@@ -32,15 +34,11 @@ const BookDetailPage = ({ match }) => {
   return (
     <>
       <Link to={`/`}>Go back to search books</Link>
-      {loading && (
-        <div style={{ color: "green" }}>
-          loading book detail for book ID: <strong>{bookId}</strong>
-        </div>
-      )}
+      <Loader loading={loading}>
+        loading book detail for book ID <strong>{bookId}</strong>
+      </Loader>
       {error && (
-        <div style={{ color: "red" }}>
-          some error occurred while retrieving book
-        </div>
+        <ErrorText>Some error occurred, while fetching books API</ErrorText>
       )}
       {book && <BookDetail book={book} />}
     </>
